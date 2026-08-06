@@ -1,0 +1,21 @@
+#!/bin/bash -l
+# Replace ACCOUNT and PARTITION with values available at the user's HPC.
+#SBATCH --account=ACCOUNT
+#SBATCH --partition=PARTITION
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=12:00:00
+#SBATCH --array=1-500%20
+#SBATCH --job-name=PPLSimulation
+#SBATCH --output=simulation_%A_%a.log
+#SBATCH --mail-type=FAIL
+
+module load SAS/9.4_1M7
+
+: "${REPO_ROOT:?Set REPO_ROOT when submitting}"
+: "${SIM_OUTPUT:?Set SIM_OUTPUT when submitting}"
+: "${SIM_N:?Set SIM_N when submitting}"
+
+sas -memsize 64G -sortsize 8G "$REPO_ROOT/hpc/run_simulation_array.sas"
