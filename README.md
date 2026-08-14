@@ -48,7 +48,7 @@ The repository reproduces the statistical workflow and simulation study. Reprodu
 
 ## Citation and archived release
 
-Citation metadata are provided in `CITATION.cff`. The development repository is available at <https://github.com/dalejo643/ppl-multivariate-longitudinal>. After coauthor approval, a versioned release will be archived in Zenodo and the DOI will be added here and to the manuscript.
+Citation metadata are provided in `CITATION.cff`. The development repository is available at <https://github.com/dalejo643/ppl-multivariate-longitudinal>. Version `v0.1.0` is permanently archived in Zenodo at <https://doi.org/10.5281/zenodo.21935235>.
 
 ## License
 

@@ -9,4 +9,7 @@ version: 0.1.0
 date-released: 2026-08-14
 license: "GPL-3.0-only"
 repository-code: "https://github.com/dalejo643/ppl-multivariate-longitudinal"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21935235"
 abstract: "SAS workflow and simulation code accompanying a study of partitioned pseudo-likelihood estimation for group-specific covariance structures in multivariate longitudinal mixed models."
