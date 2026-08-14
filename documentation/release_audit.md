@@ -23,4 +23,4 @@
 7. [Completed 2026-08-14] Recorded SAS 9.4 for both local and HPC analyses and R 4.5.1 with the figure-generation package versions.
 8. [Completed 2026-08-14] GPL-3.0-only was selected by the corresponding author under the coauthors' delegation. The official unmodified GPL v3 text was added, and the provisional dual-license files and metadata were removed.
 9. [Completed 2026-08-14] Confirmed the GitHub repository URL in `CITATION.cff` and `README.md`; no unresolved repository placeholders remain.
-10. [Ready for final confirmation] The working tree and existing one-commit history were scanned for restricted filenames, HUNT paths, HPC identifiers, personal email addresses, and local user paths. No matches were found. Repeat the history scan after committing the release changes.
+10. [Completed 2026-08-14] The committed Git history was scanned for restricted filenames, HUNT paths, HPC identifiers, personal email addresses, and local user paths. No matches were found, and the local and remote `main` branches were synchronized.
