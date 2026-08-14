@@ -7,7 +7,6 @@ authors:
     given-names: "Diego Alejandro"
 version: 0.1.0
 date-released: 2026-08-06
-license: "LicenseRef-Pending"
-repository-code: "https://github.com/OWNER/REPOSITORY"
+license: "GPL-3.0-only"
+repository-code: "https://github.com/dalejo643/ppl-multivariate-longitudinal"
 abstract: "SAS workflow and simulation code accompanying a study of partitioned pseudo-likelihood estimation for group-specific covariance structures in multivariate longitudinal mixed models."
-

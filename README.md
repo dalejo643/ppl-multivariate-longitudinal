@@ -10,10 +10,10 @@ Individual-level data from the Trøndelag Health Study (HUNT) are not distribute
 
 ## Software
 
-- SAS 9.4
-- R is used only for publication-quality diagnostic figures.
+- SAS 9.4 for the local and HPC analyses.
+- R 4.5.1 for publication-quality diagnostic figures.
 
-Exact software information will be recorded in `environment/software_versions.md` before archival release.
+Package and platform details are recorded in `environment/software_versions.md`.
 
 ## Repository structure
 
@@ -30,9 +30,17 @@ output_examples/  Small outputs generated from synthetic data
 
 1. Copy `environment/config.example.sas` to `environment/config.sas`.
 2. Edit the root directory in `config.sas`.
-3. Run `code/00_run_synthetic_example.sas`.
+3. Define `REPO_ROOT` and run `run_all_examples.sas`.
 
 The synthetic example will generate its own data and will not read HUNT files.
+
+The optional diagnostic-figure program is run as:
+
+```text
+Rscript code/09_create_diagnostic_figures.R input.xlsx output_directory
+```
+
+Its input workbook must contain the documented `Transformation_data` and `Residual_data` sheets. The empirical workbook is not distributed because it contains participant-level diagnostic values.
 
 ## Reproducibility scope
 
@@ -40,8 +48,8 @@ The repository reproduces the statistical workflow and simulation study. Reprodu
 
 ## Citation and archived release
 
-Citation metadata are provided in `CITATION.cff`. After coauthor approval, a versioned release will be archived in Zenodo and the DOI will be added here and to the manuscript.
+Citation metadata are provided in `CITATION.cff`. The development repository is available at <https://github.com/dalejo643/ppl-multivariate-longitudinal>. After coauthor approval, a versioned release will be archived in Zenodo and the DOI will be added here and to the manuscript.
 
-## License status
+## License
 
-The intended model is dual licensing: non-commercial academic use under defined research terms and a separate license for commercial use. No reuse rights are granted while the definitive terms remain under institutional and coauthor review. See `LICENSE_PENDING.md`.
+The software in this repository is distributed under the GNU General Public License v3.0 only (`GPL-3.0-only`). See `LICENSE` for the complete terms.

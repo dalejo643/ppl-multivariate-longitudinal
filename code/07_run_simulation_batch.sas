@@ -28,34 +28,28 @@
     /* The 15 covariance parameters in the model's verified output order. */
     data work._true_cov;
         length DiagnosticGroup $3 ParameterType $12;
-        input ParameterIndex DiagnosticGroup $ ParameterType $ TrueValue;
-        datalines;
-1 DEM Variance1 0.17160
-2 DEM Covariance 0.09555
-3 DEM Variance2 0.30970
-4 MCI Variance1 0.19880
-5 MCI Covariance 0.06981
-6 MCI Variance2 0.24430
-7 NCI Variance1 0.19630
-8 NCI Covariance 0.05728
-9 NCI Variance2 0.24240
-10 DEM Residual1 0.20130
-11 MCI Residual1 0.19620
-12 NCI Residual1 0.23840
-13 DEM Residual2 0.10700
-14 MCI Residual2 0.07590
-15 NCI Residual2 0.05681
-;
+        ParameterIndex=1;  DiagnosticGroup='DEM'; ParameterType='Variance1';  TrueValue=0.17160; output;
+        ParameterIndex=2;  DiagnosticGroup='DEM'; ParameterType='Covariance'; TrueValue=0.09555; output;
+        ParameterIndex=3;  DiagnosticGroup='DEM'; ParameterType='Variance2';  TrueValue=0.30970; output;
+        ParameterIndex=4;  DiagnosticGroup='MCI'; ParameterType='Variance1';  TrueValue=0.19880; output;
+        ParameterIndex=5;  DiagnosticGroup='MCI'; ParameterType='Covariance'; TrueValue=0.06981; output;
+        ParameterIndex=6;  DiagnosticGroup='MCI'; ParameterType='Variance2';  TrueValue=0.24430; output;
+        ParameterIndex=7;  DiagnosticGroup='NCI'; ParameterType='Variance1';  TrueValue=0.19630; output;
+        ParameterIndex=8;  DiagnosticGroup='NCI'; ParameterType='Covariance'; TrueValue=0.05728; output;
+        ParameterIndex=9;  DiagnosticGroup='NCI'; ParameterType='Variance2';  TrueValue=0.24240; output;
+        ParameterIndex=10; DiagnosticGroup='DEM'; ParameterType='Residual1';  TrueValue=0.20130; output;
+        ParameterIndex=11; DiagnosticGroup='MCI'; ParameterType='Residual1';  TrueValue=0.19620; output;
+        ParameterIndex=12; DiagnosticGroup='NCI'; ParameterType='Residual1';  TrueValue=0.23840; output;
+        ParameterIndex=13; DiagnosticGroup='DEM'; ParameterType='Residual2';  TrueValue=0.10700; output;
+        ParameterIndex=14; DiagnosticGroup='MCI'; ParameterType='Residual2';  TrueValue=0.07590; output;
+        ParameterIndex=15; DiagnosticGroup='NCI'; ParameterType='Residual2';  TrueValue=0.05681; output;
     run;
 
     data work._true_corr;
         length DiagnosticGroup $3;
-        input DiagnosticGroup $ TrueValue;
-        datalines;
-DEM 0.4145
-MCI 0.3168
-NCI 0.2626
-;
+        DiagnosticGroup='DEM'; TrueValue=0.4145; output;
+        DiagnosticGroup='MCI'; TrueValue=0.3168; output;
+        DiagnosticGroup='NCI'; TrueValue=0.2626; output;
     run;
 
     %do rep=&first_rep %to &last_rep;
@@ -82,11 +76,11 @@ NCI 0.2626
         );
 
         data work._full_cov;
+            length Estimator $12 Method $4;
             merge work.CovParms_SIMFULL_REML(in=a)
                   work._true_cov(rename=(ParameterIndex=ParamNumber));
             ParamNumber=_N_;
             if a;
-            length Estimator $12 Method $4;
             Estimator='Full REML'; Method='REML';
             Replicate=&rep; SampleSize=&sample_size; NumberPartitions=1;
             SimulationSeed=&seed;
@@ -96,6 +90,7 @@ NCI 0.2626
         %_append(base=&output_lib..SimulationCovParms,source=work._full_cov);
 
         data work._full_corr;
+            length Estimator $12 Method $4 DiagnosticGroup $3;
             array Theta[9] _temporary_;
             do ParameterIndex=1 to 9;
                 set work.CovParms_SIMFULL_REML point=ParameterIndex;
@@ -129,7 +124,9 @@ NCI 0.2626
                  source=work._full_corr2);
 
         data work._full_performance;
+            length EstimationMethod Method $4 Model $40 Estimator $12;
             set work.Performance_SIMFULL_REML;
+            Method='REML'; Partition=0;
             Replicate=&rep; SampleSize=&sample_size;
             NumberPartitions=1; SimulationSeed=&seed;
             Estimator='Full REML';
@@ -156,17 +153,23 @@ NCI 0.2626
                 n_partitions=&m
             );
 
-            data work._ppl_cov;
+            data work._ppl_cov(
+                keep=CovParm Subject Group Estimate StdErr ZValue ProbZ Alpha
+                     Lower Upper DiagnosticGroup ParameterType ParamNumber
+                     TrueValue Estimator Method Replicate SampleSize
+                     NumberPartitions SimulationSeed Error SquaredError
+            );
+                length Estimator $12 Method $4;
                 merge work.CombinedCovParms_REML_M&m(in=a)
                       work._true_cov(rename=(ParameterIndex=ParamNumber));
                 by ParamNumber;
                 if a;
-                length Estimator $12;
                 Estimator='PPL-REML';
                 Replicate=&rep; SampleSize=&sample_size;
                 SimulationSeed=&seed;
                 Estimate=Estimate_PPL;
                 StdErr=StdErr_PPL;
+                ZValue=.; ProbZ=.; Alpha=.; Lower=.; Upper=.;
                 Error=Estimate-TrueValue;
                 SquaredError=Error**2;
             run;
@@ -190,8 +193,15 @@ NCI 0.2626
             %_append(base=&output_lib..SimulationCorrelations,
                      source=work._ppl_corr);
 
-            data work._ppl_performance;
+            data work._ppl_performance(
+                keep=EstimationMethod Model Method Partition StartDateTime
+                     EndDateTime ElapsedSeconds Replicate SampleSize
+                     NumberPartitions SimulationSeed Estimator
+            );
+                length EstimationMethod Method $4 Model $40 Estimator $12;
                 set work.Performance_REML_M&m;
+                EstimationMethod='REML';
+                Model='Partition-specific bivariate model';
                 Replicate=&rep; SampleSize=&sample_size;
                 SimulationSeed=&seed;
                 Estimator='PPL-REML';
@@ -200,8 +210,10 @@ NCI 0.2626
                      source=work._ppl_performance);
 
             data work._ppl_convergence;
+                length Estimator $12;
                 set work.Convergence_REML_M&m;
                 Replicate=&rep; SampleSize=&sample_size;
+                NumberPartitions=&m;
                 SimulationSeed=&seed;
                 Estimator='PPL-REML';
             run;

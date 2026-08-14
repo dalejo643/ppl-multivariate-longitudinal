@@ -2,14 +2,14 @@
 
 | Module | Public status | Remaining work |
 |---|---|---|
-| Synthetic-data generator | Prepared | Validate in SAS 9.4M7 |
-| Full-data ML/REML model | Prepared | Validate ML and REML outputs in SAS 9.4M7 |
-| Partitioned model macro | Prepared | Validate output dimensions and convergence in SAS 9.4M7 |
-| PPL combination macro | Pending migration | Repair encoding and document ASYCOV ordering |
-| Random-effects correlations | Pending migration | Isolate delta-method module |
-| CCA | Prepared | Validate covariance reconstruction and coefficients in SAS 9.4M7 |
-| Participant bootstrap | Prepared | Validate with 20 replicates before the full run |
-| Simulation batch and summary | Prepared | Validate small batch and final output schema |
-| Diagnostic figures | Pending migration | Replace paths and define required input tables |
+| Synthetic-data generator | Validated | Public SAS 9.4 example completed |
+| Full-data ML/REML model | Validated | Public ML and REML examples completed |
+| Partitioned model macro | Validated | Parameter order, covariance dimensions, and convergence outputs checked |
+| PPL combination macro | Validated | Empirical REML M=6 results reproduced within 1e-7 |
+| Random-effects correlations | Validated | Delta-method estimates reproduced within 1e-7 |
+| CCA | Validated | Measurement order and covariance reconstruction checked |
+| Participant bootstrap | Validated | Twenty-replication release check completed |
+| Simulation batch and summary | Validated | Two-replication batch completed for M=2, 4, and 6 |
+| Diagnostic figures | Prepared | Path-free R program provided; empirical input remains restricted |
 
 Original HUNT import and data-management scripts remain internal because they contain restricted source-variable mappings and local data locations. The supplement will document the construction of the analysis variables.

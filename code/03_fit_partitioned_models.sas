@@ -160,7 +160,7 @@
             set work._convergence;
             Partition=&iter; TotalObs=&total_obs;
             TotalSubjects=&total_subjects;
-            ConvergenceSuccess=(Status=0);
+            ConvergenceSuccess=(Status=0 and pdG=1 and pdH=1);
         run;
         data work._performance;
             length Method $4;

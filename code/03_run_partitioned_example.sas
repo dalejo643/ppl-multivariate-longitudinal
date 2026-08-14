@@ -1,6 +1,13 @@
 /* Fit the public synthetic example using the same partitions for ML and REML. */
 
-%include "../environment/config.sas";
+%macro require_repo_root;
+    %if not %symexist(REPO_ROOT) %then %do;
+        %put ERROR: Define REPO_ROOT before running this example.;
+        %abort cancel;
+    %end;
+%mend require_repo_root;
+%require_repo_root;
+%include "&REPO_ROOT.\environment\config.sas";
 %include "&CODE_DIR.\01_generate_synthetic_data.sas";
 %include "&CODE_DIR.\03_fit_partitioned_models.sas";
 
@@ -31,4 +38,3 @@
     n_partitions=6,
     seed=20260719
 );
-
