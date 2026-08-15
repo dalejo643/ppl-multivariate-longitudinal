@@ -1,6 +1,7 @@
 # Publication-quality simulation trade-off figure
 # Required packages: jsonlite, ggplot2, dplyr
-# Usage: Rscript 10_create_simulation_tradeoff_figure.R simulation_summary_data.json output_directory
+# In RStudio, the program prompts for the input file and output directory.
+# From a terminal, provide both paths as arguments to Rscript.
 
 required_packages <- c("jsonlite", "ggplot2", "dplyr")
 missing_packages <- required_packages[
@@ -18,16 +19,36 @@ library(jsonlite)
 library(ggplot2)
 library(dplyr)
 
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 2) {
-  stop(
-    "Usage: Rscript 10_create_simulation_tradeoff_figure.R ",
-    "simulation_summary_data.json output_directory"
-  )
+if (interactive()) {
+  message("Select simulation_summary_data.json")
+  input_file <- file.choose()
+
+  if (.Platform$OS.type == "windows") {
+    output_dir <- utils::choose.dir(
+      default = dirname(input_file),
+      caption = "Select the directory for Figure_Simulation_Tradeoff.pdf"
+    )
+    if (is.na(output_dir)) {
+      stop("No output directory was selected.")
+    }
+  } else {
+    output_dir <- dirname(input_file)
+    message("The figure will be written beside the selected JSON file.")
+  }
+} else {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) != 2) {
+    stop(
+      "Usage: Rscript 10_create_simulation_tradeoff_figure.R ",
+      "simulation_summary_data.json output_directory"
+    )
+  }
+
+  input_file <- args[1]
+  output_dir <- args[2]
 }
 
-input_file <- normalizePath(args[1], mustWork = TRUE)
-output_dir <- args[2]
+input_file <- normalizePath(input_file, mustWork = TRUE)
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 payload <- fromJSON(input_file, simplifyDataFrame = TRUE)

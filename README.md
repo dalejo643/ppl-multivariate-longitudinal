@@ -48,6 +48,8 @@ The simulation trade-off figure is generated from the aggregated simulation summ
 Rscript code/10_create_simulation_tradeoff_figure.R simulation_summary_data.json output_directory
 ```
 
+When the program is sourced interactively in RStudio, it prompts for the JSON input file and the output directory.
+
 ## Reproducibility scope
 
 The repository reproduces the statistical workflow and simulation study. Reproducing the empirical HUNT estimates requires authorized access to the study data and application of the documented analysis-variable construction.
