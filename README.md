@@ -11,7 +11,7 @@ Individual-level data from the Trøndelag Health Study (HUNT) are not distribute
 ## Software
 
 - SAS 9.4 for the local and HPC analyses.
-- R 4.5.1 for publication-quality diagnostic figures.
+- R 4.5.1 for publication-quality diagnostic and simulation figures.
 
 Package and platform details are recorded in `environment/software_versions.md`.
 
@@ -41,6 +41,12 @@ Rscript code/09_create_diagnostic_figures.R input.xlsx output_directory
 ```
 
 Its input workbook must contain the documented `Transformation_data` and `Residual_data` sheets. The empirical workbook is not distributed because it contains participant-level diagnostic values.
+
+The simulation trade-off figure is generated from the aggregated simulation summary as:
+
+```text
+Rscript code/10_create_simulation_tradeoff_figure.R simulation_summary_data.json output_directory
+```
 
 ## Reproducibility scope
 
