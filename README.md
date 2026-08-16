@@ -42,13 +42,25 @@ Rscript code/09_create_diagnostic_figures.R input.xlsx output_directory
 
 Its input workbook must contain the documented `Transformation_data` and `Residual_data` sheets. The empirical workbook is not distributed because it contains participant-level diagnostic values.
 
-The simulation trade-off figure is generated from the aggregated simulation summary as:
+`code/08_summarize_simulation.sas` creates the analysis-ready
+`simulation_tradeoff_summary.csv` file from the aggregated SAS simulation
+outputs when the macro is called with `tradeoff_csv=`. For example:
 
-```text
-Rscript code/10_create_simulation_tradeoff_figure.R simulation_summary_data.json output_directory
+```sas
+%summarize_simulation(
+    input_lib=RESULTS,
+    output_lib=RESULTS,
+    tradeoff_csv=&REPO_ROOT.\data\simulation_tradeoff_summary.csv
+);
 ```
 
-When the program is sourced interactively in RStudio, it prompts for the JSON input file and the output directory.
+The trade-off figure is then generated as:
+
+```text
+Rscript code/10_create_simulation_tradeoff_figure.R data/simulation_tradeoff_summary.csv output_directory
+```
+
+When the program is sourced interactively in RStudio, it prompts for the CSV input file and the output directory.
 
 ## Reproducibility scope
 

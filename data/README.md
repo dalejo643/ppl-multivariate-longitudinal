@@ -16,3 +16,6 @@ MoCA is generated at times 0 and 1. p-tau217 is generated at times -1, 0, and 1.
 
 Generated SAS datasets are written to `data/generated/` and are excluded from Git.
 
+`simulation_tradeoff_summary.csv` contains only aggregated simulation results.
+It is created by `code/08_summarize_simulation.sas` and is the input used by
+`code/10_create_simulation_tradeoff_figure.R`.

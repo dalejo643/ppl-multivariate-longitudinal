@@ -1,9 +1,9 @@
 # Publication-quality simulation trade-off figure
-# Required packages: jsonlite, ggplot2, dplyr
+# Required packages: ggplot2, dplyr
 # In RStudio, the program prompts for the input file and output directory.
 # From a terminal, provide both paths as arguments to Rscript.
 
-required_packages <- c("jsonlite", "ggplot2", "dplyr")
+required_packages <- c("ggplot2", "dplyr")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
 ]
@@ -15,12 +15,11 @@ if (length(missing_packages) > 0) {
   )
 }
 
-library(jsonlite)
 library(ggplot2)
 library(dplyr)
 
 if (interactive()) {
-  message("Select simulation_summary_data.json")
+  message("Select simulation_tradeoff_summary.csv")
   input_file <- file.choose()
 
   if (.Platform$OS.type == "windows") {
@@ -33,14 +32,14 @@ if (interactive()) {
     }
   } else {
     output_dir <- dirname(input_file)
-    message("The figure will be written beside the selected JSON file.")
+    message("The figure will be written beside the selected CSV file.")
   }
 } else {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) != 2) {
     stop(
       "Usage: Rscript 10_create_simulation_tradeoff_figure.R ",
-      "simulation_summary_data.json output_directory"
+      "simulation_tradeoff_summary.csv output_directory"
     )
   }
 
@@ -51,8 +50,7 @@ if (interactive()) {
 input_file <- normalizePath(input_file, mustWork = TRUE)
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-payload <- fromJSON(input_file, simplifyDataFrame = TRUE)
-plot_data <- as.data.frame(payload$main) %>%
+plot_data <- read.csv(input_file, stringsAsFactors = FALSE) %>%
   mutate(
     N = factor(N, levels = c(2500, 5000, 10000)),
     M = as.integer(M),
@@ -71,7 +69,7 @@ plot_data <- as.data.frame(payload$main) %>%
   arrange(N, M)
 
 if (nrow(plot_data) == 0) {
-  stop("No partitioned simulation configurations were found in payload$main.")
+  stop("No partitioned simulation configurations were found in the CSV file.")
 }
 
 palette_n <- c(
